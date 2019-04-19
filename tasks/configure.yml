@@ -1,31 +1,29 @@
 ---
 
-- name     : generate locale configuration file
-  template :
-    src   : "{{ role_path }}/templates/locale.j2"
-    dest  : "{{ locales_config_file_dest }}"
-    owner : "{{ locales_config_file_owner }}"
-    group : "{{ locales_config_file_group }}"
-    mode  : "{{ locales_config_file_mode }}"
+- name: "CONFIG | check if {{ locales_config_file_dest }} exist"
+  stat:
+    path: "{{ locales_config_file_dest }}"
+  register: locales_config_file_dest_exists
 
+- name: 'CONFIG | generate locale configuration file'
+  template:
+    src: "{{ role_path }}/templates/locale.j2"
+    dest: "{{ locales_config_file_dest }}"
+    owner: "{{ locales_config_file_owner }}"
+    group: "{{ locales_config_file_group }}"
+    mode: "{{ locales_config_file_mode }}"
+  when: not locales_config_file_dest_exists.stat.exists
 
-- name     : generate locale.gen configuration file
-  template :
-    src   : "{{ role_path }}/templates/locale.gen.j2"
-    dest  : "{{ locales_gen_file_dest }}"
-    owner : "{{ locales_gen_file_owner }}"
-    group : "{{ locales_gen_file_group }}"
-    mode  : "{{ locales_gen_file_mode }}"
+- name: 'CONFIG | check if default_lang is setup'
+  lineinfile:
+    path: "{{ locales_config_file_dest }}"
+    regexp: "^LANG="
+    line: "LANG={{ locales_default_lang }}"
+    state: 'present'
+  when: locales_config_file_dest_exists.stat.exists
 
-
-- name       : generate locales
-  locale_gen :
-    name  : "{{ item.split(' ')[0] }}"
-    state : present
-  register   : locale_generated
-  with_items : locales_to_configure
-
-
-- name    : update system settings
-  command : "{{ locales_update_command }}"
-  when : locale_generated.changed == True
+- name: 'CONFIG | generate locales'
+  locale_gen:
+    name: "{{ item.name.split(' ')[0] }}"
+    state: "{{ item.state }}"
+  with_items: "{{ locales_to_configure }}"

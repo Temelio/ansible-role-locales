@@ -1,0 +1,21 @@
+---
+
+# Role tests
+
+- name: 'Converge | Prerequisites tasks'
+  hosts: 'locales-docker-xenial'
+  gather_facts: false
+  tasks:
+    - name: 'PREREQUISITES | APT | Do an apt-get update'
+      become: true
+      raw: 'apt-get update -qq'
+      changed_when: false
+    - name: 'PREREQUISITES | APT | Install python 2.7'
+      become: true
+      raw: 'apt-get install -qq python2.7'
+      changed_when: false
+
+
+- hosts: 'all'
+  roles:
+    - role: 'ansible-role-locales'

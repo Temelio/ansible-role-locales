@@ -2,34 +2,27 @@
 
 # Travis file for locales role
 
+dist: 'xenial'
+sudo: 'required'
+
 language: python
 python: "2.7"
 
-before_install:
-  # Make sure everything's up to date.
-  - sudo apt-get update -qq
+services:
+  - 'docker'
+
+env:
+  matrix:
+    - TOXENV='py27-ansible24'
+    - TOXENV='py27-ansible25'
+    - TOXENV='py27-ansible26'
+    - TOXENV='py27-ansible27'
 
 install:
-  # Install Ansible.
-  - pip install ansible
-
-  # Add ansible.cfg to pick up roles path.
-  - "cp ./tests/ansible.cfg ./"
+  - 'pip install tox-travis'
 
 script:
-  # Check the role/playbook's syntax.
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+  - 'tox -e "${TOXENV}"'
 
-  # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo"
-
-  # Run the role/playbook again, checking to make sure it's idempotent.
-  # Set change=1 due to a bug in ansible service module always return changed
-  - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
-    | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
-
-  # Check locales is accessible
-  - test "fr_FR.UTF-8" == `sudo cat /etc/default/locale | grep LANG= | cut -d '=' -f 2`
+notifications:
+  webhooks: 'https://galaxy.ansible.com/api/v1/notifications/'

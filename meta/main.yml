@@ -1,24 +1,20 @@
 ---
 galaxy_info:
-  author: Alexandre Chaussier
-  description: install locales package
-  company: Infopen (http://www.infopen.pro)
-  license: MIT
-  min_ansible_version: 1.5
+  role_name: 'locales'
+  author: 'A Chaussier, L Machetel'
+  description: 'install locales package on Debian like systems'
+  company: 'Temelio (https://www.temelio.com)'
+  license: 'MIT'
+  min_ansible_version: '2.4'
   platforms:
-    - name: Ubuntu
+    - name: 'Ubuntu'
       versions:
-        - precise
-        - quantal
-        - saucy
-        - trusty
-        - utopic
-        - vivid
-    - name: Debian
+        - 'trusty'
+        - 'xenial'
+        - 'bionic'
+    - name: 'Debian'
       versions:
-        - jessie
-        - wheezy
-
-  categories:
-    - system
+        - 'stretch'
+  galaxy_tags:
+    - 'system'
 dependencies: []

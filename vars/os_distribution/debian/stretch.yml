@@ -1,0 +1,9 @@
+---
+
+# Debian specific vars
+
+_locales_packages:
+  - name: 'locales'
+    state: 'present'
+
+locales_update_command: '/usr/sbin/update-locale'

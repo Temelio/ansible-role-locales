@@ -1,0 +1,11 @@
+---
+
+# Debian specific vars
+
+_locales_packages:
+  - name: 'locales'
+    state: 'present'
+  - name: 'language-pack-en'
+    state: 'present'
+
+locales_config_file_dest: '/etc/default/locale'

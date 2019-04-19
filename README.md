@@ -1,14 +1,20 @@
 locales
 =======
 
-[![Build Status](https://travis-ci.org/infOpen/ansible-role-locales.svg?branch=master)](https://travis-ci.org/infOpen/ansible-role-locales)
+[![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/Temelio/ansible-role-locales.svg?branch=master)](https://travis-ci.com/Temelio/ansible-role-locales)
+[![Build Status](https://travis-ci.org/Temelio/ansible-role-locales.svg?branch=develop)](https://travis-ci.com/Temelio/ansible-role-locales)
+[![Updates](https://pyup.io/repos/github/Temelio/ansible-role-locales/shield.svg)](https://pyup.io/repos/github/Temelio/ansible-role-locales/)
+[![Python 3](https://pyup.io/repos/github/Temelio/ansible-role-locales/python-3-shield.svg)](https://pyup.io/repos/github/Temelio/ansible-role-locales/)
+[![Ansible Role](https://img.shields.io/ansible/role/.svg)](https://galaxy.ansible.com/Temelio/locales/)
+[![GitHub tag](https://img.shields.io/github/tag/Temelio/ansible-role-locales.svg)](https://github.com/Temelio/ansible-role-locales/tags)
 
 Install locales package.
 
 Requirements
 ------------
 
-This role requires Ansible 1.4 or higher, and platform requirements are listed
+This role requires Ansible 2.4 or higher, and platform requirements are listed
 in the metadata file.
 
 Role Variables
@@ -18,9 +24,10 @@ Default role variables
 
 
     locales_to_configure :
-      - "fr_FR.UTF-8 UTF-8"
+      - name: 'en_US.UTF-8 UTF-8'
+        state: 'present'
 
-    locales_default_lang : "fr_FR.UTF-8"
+    locales_default_lang : "eb_US.UTF-8"
 
     locales_default_timezone : "Europe/Paris"
 
@@ -28,22 +35,14 @@ Default role variables
     locales_config_file_group : "root"
     locales_config_file_mode  : "0644"
 
-    locales_gen_file_owner : "root"
-    locales_gen_file_group : "root"
-    locales_gen_file_mode  : "0644"
-
 
 # Default Debian vars
 
     locales_packages :
       - locales
-      - language-pack-fr
+      - language-pack-en (except for Stretch)
 
     locales_config_file_dest : "/etc/default/locale"
-    locales_gen_file_dest    : "/etc/locale.gen"
-
-
-    locales_update_command : "/usr/sbin/update-locale"
 
 
 Dependencies
@@ -56,7 +55,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-        - { role: achaussier.locales }
+        - { role: temelio.locales }
 
 License
 -------
@@ -66,6 +65,5 @@ MIT
 Author Information
 ------------------
 
-Alexandre Chaussier (for Infopen company)
-- http://www.infopen.pro
-- a.chaussier [at] infopen.pro
+L Machetel (for Temelio company)
+A Chaussier (for Infopen company)
